@@ -24,7 +24,7 @@ var app = (function () {
         
         return {
             x: evt.clientX - rect.left,
-            y: evt.clientY - rect.top,
+            y: evt.clientY - rect.top
             
         };
         
