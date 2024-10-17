@@ -21,11 +21,16 @@ var app = (function () {
     var getMousePosition = function (evt) {
         canvas = document.getElementById("canvas");
         var rect = canvas.getBoundingClientRect();
+        
         return {
             x: evt.clientX - rect.left,
-            y: evt.clientY - rect.top
+            y: evt.clientY - rect.top,
+            
         };
+        
     };
+
+    
 
 
     var connectAndSubscribe = function () {
@@ -57,6 +62,16 @@ var app = (function () {
 
         init: function () {
             var can = document.getElementById("canvas");
+
+            if (window.PointerEvent) {
+                can.addEventListener("pointerdown", function (event) {
+                    publishPoint(getMousePosition(event));
+                });
+            } else {
+                can.addEventListener("mousedown", function (event) {
+                    publishPoint(getMousePosition(event));
+                });
+            }
             
             //websocket connection
             connectAndSubscribe();
