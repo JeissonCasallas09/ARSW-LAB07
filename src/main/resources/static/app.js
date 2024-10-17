@@ -33,17 +33,23 @@ var app = (function () {
         var socket = new SockJS('/stompendpoint');
         stompClient = Stomp.over(socket);
         
-        //subscribe to /topic/TOPICXX when connections succeed
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
+
             stompClient.subscribe('/topic/newpoint', function (eventbody) {
-                var theObject=JSON.parse(message.body);
-                alert(theObject);
+                const point = JSON.parse(eventbody.body);
                 
+                var x = point.x;
+                var y = point.y;
+    
+                alert(x + " " + y );
+    
             });
         });
 
-    };
+        
+
+    }
     
     
 
