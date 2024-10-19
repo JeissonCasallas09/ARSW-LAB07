@@ -8,6 +8,7 @@ var app = (function () {
     }
 
     var stompClient = null;
+    var subscription = null;
 
     var addPointToCanvas = function (point) {        
         var canvas = document.getElementById("canvas");
@@ -29,7 +30,7 @@ var app = (function () {
         
     };
 
-    var connectAndSubscribe = function () {
+    var connectAndSubscribe = function (room) {
         console.info('Connecting to WS...');
         var socket = new SockJS('/stompendpoint');
         stompClient = Stomp.over(socket);
@@ -37,12 +38,13 @@ var app = (function () {
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
 
-            stompClient.subscribe('/topic/newpoint', function (eventbody) {
+            subscription = stompClient.subscribe(`/topic/newpoint.${room}`, function (eventbody) {
                 const point = JSON.parse(eventbody.body);
                 
                 var x = point.x;
                 var y = point.y;
     
+                //alert(x + " " + y );
                 addPointToCanvas(point);
             });
         });
@@ -51,32 +53,33 @@ var app = (function () {
     return {
 
         init: function () {
+            this.disconnect();
+
+            var drawingId = document.getElementById("drawing").value;
             var can = document.getElementById("canvas");
 
             //websocket connection
-            connectAndSubscribe();
+            connectAndSubscribe(drawingId);
 
             if (window.PointerEvent) {
                 can.addEventListener("pointerdown", function (event) {
                     point = getMousePosition(event);
-                    console.log(point.x + " "  + point.y)
-                    app.publishPoint(point.x, point.y);
+                    app.publishPoint(point.x, point.y, drawingId);
                 });
             } else {
                 can.addEventListener("mousedown", function (event) {
                     point = getMousePosition(event);
-                    console.log(point.x + " "  + point.y)
-                    app.publishPoint(point.x, point.y);
+                    app.publishPoint(point.x, point.y, drawingId);
                 });
             }
         },
 
-        publishPoint: function(px,py){
+        publishPoint: function(px,py,room){
             var pt=new Point(px,py);
             console.info("publishing point at "+pt);
-            addPointToCanvas(pt);
+            //addPointToCanvas(pt);
             //creando un objeto literal
-            stompClient.send("/topic/newpoint", {}, JSON.stringify(pt)); 
+            stompClient.send(`/topic/newpoint.${room}`, {}, JSON.stringify(pt)); 
 
             //publicar el evento
         },
@@ -84,8 +87,11 @@ var app = (function () {
         disconnect: function () {
             if (stompClient !== null) {
                 stompClient.disconnect();
+                if(subscription){
+                    subscription.unsubscribe();
+                }
             }
-            setConnected(false);
+            //setConnected(false);
             console.log("Disconnected");
         }
     };
