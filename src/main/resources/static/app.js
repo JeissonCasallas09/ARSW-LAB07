@@ -6,7 +6,7 @@ var app = (function () {
             this.y=y;
         }        
     }
-    
+
     var stompClient = null;
 
     var addPointToCanvas = function (point) {        
@@ -16,7 +16,6 @@ var app = (function () {
         ctx.arc(point.x, point.y, 3, 0, 2 * Math.PI);
         ctx.stroke();
     };
-    
     
     var getMousePosition = function (evt) {
         canvas = document.getElementById("canvas");
@@ -29,9 +28,6 @@ var app = (function () {
         };
         
     };
-
-    
-
 
     var connectAndSubscribe = function () {
         console.info('Connecting to WS...');
@@ -51,27 +47,24 @@ var app = (function () {
     
             });
         });
-
-        
-
     }
-    
-    
 
     return {
 
         init: function () {
             var can = document.getElementById("canvas");
 
-            if (window.PointerEvent) {
-                can.addEventListener("pointerdown", function (event) {
-                    publishPoint(getMousePosition(event));
-                });
-            } else {
-                can.addEventListener("mousedown", function (event) {
-                    publishPoint(getMousePosition(event));
-                });
-            }
+            // if (window.PointerEvent) {
+            //     can.addEventListener("pointerdown", function (event) {
+            //         point = getMousePosition(event);
+            //         publishPoint(point.x, point.y);
+            //     });
+            // } else {
+            //     can.addEventListener("mousedown", function (event) {
+            //         point = getMousePosition(event);
+            //         publishPoint(point.x, point.y);
+            //     });
+            // }
             
             //websocket connection
             connectAndSubscribe();
