@@ -43,8 +43,7 @@ var app = (function () {
                 var x = point.x;
                 var y = point.y;
     
-                alert(x + " " + y );
-    
+                addPointToCanvas(point);
             });
         });
     }
@@ -54,20 +53,22 @@ var app = (function () {
         init: function () {
             var can = document.getElementById("canvas");
 
-            // if (window.PointerEvent) {
-            //     can.addEventListener("pointerdown", function (event) {
-            //         point = getMousePosition(event);
-            //         publishPoint(point.x, point.y);
-            //     });
-            // } else {
-            //     can.addEventListener("mousedown", function (event) {
-            //         point = getMousePosition(event);
-            //         publishPoint(point.x, point.y);
-            //     });
-            // }
-            
             //websocket connection
             connectAndSubscribe();
+
+            if (window.PointerEvent) {
+                can.addEventListener("pointerdown", function (event) {
+                    point = getMousePosition(event);
+                    console.log(point.x + " "  + point.y)
+                    app.publishPoint(point.x, point.y);
+                });
+            } else {
+                can.addEventListener("mousedown", function (event) {
+                    point = getMousePosition(event);
+                    console.log(point.x + " "  + point.y)
+                    app.publishPoint(point.x, point.y);
+                });
+            }
         },
 
         publishPoint: function(px,py){
