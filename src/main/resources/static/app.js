@@ -70,7 +70,7 @@ var app = (function () {
         publishPoint: function(px,py){
             var pt=new Point(px,py);
             console.info("publishing point at "+pt);
-            stompClient.send(`/topic/newpoint.${drawingId}`, {}, JSON.stringify(pt)); 
+            stompClient.send(`/app/newpoint.${drawingId}`, {}, JSON.stringify(pt)); 
         },
 
         disconnect: function () {
