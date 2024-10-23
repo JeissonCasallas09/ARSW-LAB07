@@ -201,8 +201,13 @@ R/: Se modifica la ruta para que ahora se envíen los puntos al back con la ruta
 
 	4. Verifique la funcionalidad: igual a la anterior, pero ahora dibujando polígonos cada vez que se agreguen cuatro puntos.
 	
+	![](img/20.png)
+
+	R/: El programa sigue teniendo la misma funcionalidad, solo que ahora crea poligonos con 4 puntos.
 	
 4. A partir de los diagramas dados en el archivo ASTAH incluido, haga un nuevo diagrama de actividades correspondiente a lo realizado hasta este punto, teniendo en cuenta el detalle de que ahora se tendrán tópicos dinámicos para manejar diferentes dibujos simultáneamente.
+
+	![](img/21.png)s
 
 5. Haga commit de lo realizado.
 
