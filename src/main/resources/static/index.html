@@ -29,9 +29,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
     
-    <body>
+    <body onload="app.init()">
 
-        <form id="connectForm" onsubmit="event.preventDefault(); app.init();">
+        <form id="connectForm" onsubmit="event.preventDefault(); app.connect();">
             <label for="drawing">DRAWING ID:</label>
             <input id="drawing" name="drawing" type="number" required>
             <button type="submit">Conectarse</button>

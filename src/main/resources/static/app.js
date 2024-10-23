@@ -75,12 +75,7 @@ var app = (function () {
     return {
 
         init: function () {
-
-            drawingId = document.getElementById("drawing").value;
             var can = document.getElementById("canvas");
-
-            clearCanvas();
-            connectAndSubscribe();
 
             if (window.PointerEvent) {
                 can.addEventListener("pointerdown", function (event) {
@@ -93,6 +88,14 @@ var app = (function () {
                     app.publishPoint(point.x, point.y);
                 });
             }
+        },
+
+        connect: function (){
+            drawingId = document.getElementById("drawing").value;
+            var can = document.getElementById("canvas");
+
+            clearCanvas();
+            connectAndSubscribe();
         },
 
         publishPoint: function(px,py){
