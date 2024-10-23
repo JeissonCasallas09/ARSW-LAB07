@@ -10,6 +10,12 @@ var app = (function () {
     var stompClient = null;
     var drawingId = null;
 
+    var clearCanvas = function (){
+        canvas = document.getElementById("canvas");
+        ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
     var addPointToCanvas = function (point) {        
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
@@ -27,6 +33,7 @@ var app = (function () {
         for (let i = 1; i < points.length; i++) {
             ctx.lineTo(points[i].x, points[i].y);
         }
+        ctx.lineTo(points[0].x, points[0].y);
         ctx.stroke();
         ctx.closePath();
     };
@@ -72,6 +79,7 @@ var app = (function () {
             drawingId = document.getElementById("drawing").value;
             var can = document.getElementById("canvas");
 
+            clearCanvas();
             connectAndSubscribe();
 
             if (window.PointerEvent) {

@@ -1,5 +1,6 @@
 package edu.eci.arsw.collabpaint.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,10 +22,29 @@ public class STOMPMessagesHandler {
 	Map<Integer, List<Point>> drawings = new ConcurrentHashMap<>();
 
 	@MessageMapping("/newpoint.{drawingId}")
-	public void handlePointEvent(Point pt,@DestinationVariable String drawingId) throws Exception {
-		System.out.println("Nuevo punto recibido en el servidor!:"+pt);
+	public void handlePointEvent(Point pt,@DestinationVariable Integer drawingId) throws Exception {
+		
+		// System.out.println("Nuevo punto recibido en el servidor!:"+pt);
 		msgt.convertAndSend("/topic/newpoint."+drawingId, pt);
 
-		
+		System.out.println(drawingId);
+
+		if(!drawings.containsKey(drawingId)){
+			//System.out.println("siuuuuu:"+drawingId);
+			List<Point> points = new ArrayList<>();
+			points.add(pt);
+			drawings.putIfAbsent(drawingId, points);
+		}
+
+		else{
+			
+			List<Point> points = drawings.get(drawingId);
+			points.add(pt);
+			System.out.println("nouuuuu:"+points.toString());
+			if(points.size() >= 3){
+				msgt.convertAndSend("/topic/newpolygon." + drawingId, points);
+				points.clear();
+			}
+		}
 	}
 }
