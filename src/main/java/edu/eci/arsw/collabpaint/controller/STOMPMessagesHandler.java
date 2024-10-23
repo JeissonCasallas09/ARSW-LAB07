@@ -36,7 +36,7 @@ public class STOMPMessagesHandler {
 		else{
 			List<Point> points = drawings.get(drawingId);
 			points.add(pt);
-			if(points.size() >= 3){
+			if(points.size() >= 4){
 				msgt.convertAndSend("/topic/newpolygon." + drawingId, points);
 				points.clear();
 			}
